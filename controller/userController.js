@@ -1,9 +1,8 @@
 const express = require("express")
 const signUpValidation = require("../validation/userValidation")
 const signInValidation = require("../validation/userValidation")
-const User = require("../Schema/Schema")
-const UserTodo = require("../Schema/Schema")
-const TeamTodo = require("../Schema/Schema")
+const User = require("../Schema/UserSchema")
+const UserTodo = require("../Schema/UserSchema")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
@@ -78,8 +77,10 @@ const userSignin = async (req, res) => {
     const passwordMatch = await bcrypt.compare(password, findUser.password);
 
     if (passwordMatch) {
-        const token = jwt.sign({ email: findUser.email }, JWT_SECRET);
-        return res.json({ msg: "You are logged in.", token });
+        const token = jwt.sign({ id: findUser._id.toString() }, process.env.JWT_SECRET, {
+            expiresIn: "15d"
+        })
+        return res.json({ msg: "You are logged in", token });
     } else {
         return res.status(403).json({ message: "Incorrect password" });
     }
