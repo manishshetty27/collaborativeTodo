@@ -12,16 +12,14 @@ const JWT_SECRET = (process.env.JWT_SECRET)
 
 const userSignup = async (req, res) => {
     try {
+        const { userName, name, email, password } = req.body
         const parsedData = signUpValidation.safeParse(req.body)
         if (!parsedData.success) {
             return res.json({
                 message: "Incorrect format",
                 error: parsedData.error
             })
-
         }
-
-        const {userName, name, email, password} =req.body
     }
     catch (error) {
         res.status(500).json({ message: "Something went Wrong" })
@@ -29,16 +27,16 @@ const userSignup = async (req, res) => {
     }
 
     try {
-    const hashedPassword = await bcrypt.hash(password, 5)
-}
-catch(e){
-    res.status(500).json({
-        message: "error while hashing"
-    })
-}
+        const hashedPassword = await bcrypt.hash(password, 5)
+    }
+    catch (e) {
+        res.status(500).json({
+            message: "error while hashing"
+        })
+    }
 
     try {
-        await UserModel.create({
+        await User.create({
             email: email,
             password: hashedPassword,
             name: name
@@ -55,5 +53,36 @@ catch(e){
     }
 }
 
+const userSignin = async (req, res) => {
+    try {
+        const { userName, name, email, password } = req.body
+        const parsedData = signInValidation.safeParse(req.body)
+        if (!parsedData.success) {
+            return res.json({
+                message: "Incorrect format",
+                error: parsedData.error
+            })
+        }
+    }
+    catch (error) {
+        res.status(400).json({ message: "Something went Wrong" })
+        console.log(error)
+    }
+
+    const findUser = await User.findOne({ email: email });
+    console.log(findUser)
+    if (!findUser) {
+        return res.status(403).json({ message: "User does not exist" });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, findUser.password);
+
+    if (passwordMatch) {
+        const token = jwt.sign({ email: findUser.email }, JWT_SECRET);
+        return res.json({ msg: "You are logged in.", token });
+    } else {
+        return res.status(403).json({ message: "Incorrect password" });
+    }
+};
 
 
