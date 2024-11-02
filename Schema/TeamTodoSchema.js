@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const UserTodoSchema = require("../Schema/TodoSchema")
 
 const TeamTodoSchema = new mongoose.Schema(
     {

@@ -7,8 +7,9 @@ const UserTodoSchema = new mongoose.Schema(
       completed: { type: Boolean, default: false },
       assignee: String,
       priority: {
-        type: { type: String, required: true },
-        enum: ["low", "medium", "high"]
+        type: String,
+        required: true,
+        enum: ["low", "medium", "high"],
       },
       dueDate: Date,
     },

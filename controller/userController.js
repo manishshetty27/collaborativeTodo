@@ -1,17 +1,14 @@
 const express = require("express")
 const signUpValidation = require("../validation/userValidation")
 const signInValidation = require("../validation/userValidation")
-const User = require("../Schema/UserSchema")
-const UserTodo = require("../Schema/UserSchema")
+const { User } = require("../Schema/UserSchema");
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
-const JWT_SECRET = (process.env.JWT_SECRET)
-
-const userSignup = async (req, res) => {
+    const userSignup = async (req, res) => {
     try {
-        const { userName, name, email, password } = req.body
+        const { username, name, email, password } = req.body
         const parsedData = signUpValidation.safeParse(req.body)
         if (!parsedData.success) {
             return res.json({
@@ -27,15 +24,8 @@ const userSignup = async (req, res) => {
 
     try {
         const hashedPassword = await bcrypt.hash(password, 5)
-    }
-    catch (e) {
-        res.status(500).json({
-            message: "error while hashing"
-        })
-    }
-
-    try {
         await User.create({
+            username: username,
             email: email,
             password: hashedPassword,
             name: name
@@ -52,7 +42,7 @@ const userSignup = async (req, res) => {
     }
 }
 
-const userSignin = async (req, res) => {
+    const userSignin = async (req, res) => {
     try {
         const { userName, name, email, password } = req.body
         const parsedData = signInValidation.safeParse(req.body)
@@ -86,4 +76,5 @@ const userSignin = async (req, res) => {
     }
 };
 
+module.exports = {userSignup, userSignin}
 
