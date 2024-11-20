@@ -1,24 +1,22 @@
-const express = require('express');
+const express = require("express");
+const router = express.Router();
 const {
   createTodo,
   updateTodo,
   deleteTodo,
   assignTaskToUser,
-} = require('../controllers/todoController');
-const {authMiddleware} = require('../middlewares/authMiddleware');
+} = require("../controllers/todoController");
 
-const router = express.Router();
+// Route to create a new todo
+router.post("/create", createTodo);
 
-// Create a new Todo
-router.post('/create', authMiddleware, createTodo);
+// Route to update an existing todo
+router.put("/update", updateTodo);
 
-// Update an existing Todo
-router.put('/update', authMiddleware, updateTodo);
+// Route to delete a todo
+router.delete("/delete", deleteTodo);
 
-// Delete a Todo
-router.delete('/delete', authMiddleware, deleteTodo);
-
-// Assign a Todo to a User
-router.post('/assign', authMiddleware, assignTaskToUser);
+// Route to assign a task to a user
+router.post("/assign", assignTaskToUser);
 
 module.exports = router;

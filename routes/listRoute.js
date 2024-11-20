@@ -1,34 +1,26 @@
-const express = require('express');
+const express = require("express");
+const router = express.Router();
 const {
   createList,
   updateList,
   deleteList,
-  addTaskToList,
-  removeTaskFromList,
   addCollaborator,
   removeCollaborator,
-} = require('../controllers/listController');
+} = require("../controllers/listController");
 
-const router = express.Router();
+// Route to create a new list
+router.post("/create", createList);
 
-// Create a new list
-router.post('/create', createList);
+// Route to update an existing list
+router.put("/update", updateList);
 
-// Add a task to a list
-router.post('/add-task', addTaskToList);
+// Route to delete a list
+router.delete("/delete", deleteList);
 
-// Remove a task from a list
-router.post('/remove-task', removeTaskFromList);
+// Route to add a collaborator to a list
+router.post("/add-collaborator", addCollaborator);
 
-// Update list details (e.g., title, collaborators)
-router.put('/update', updateList);
-
-// Delete a list
-router.delete('/:listId', deleteList);
-
-// Add a collaborator to a list by email
-router.post('/add-collaborator', addCollaborator);
-
-router.post('/remove-collaborator', removeCollaborator);
+// Route to remove a collaborator from a list
+router.post("/remove-collaborator", removeCollaborator);
 
 module.exports = router;
