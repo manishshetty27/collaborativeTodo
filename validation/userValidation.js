@@ -1,18 +1,18 @@
-const {z} = require("zod")
+const { z } = require("zod");
 
 const signUpValidation = z.object({
-    userName: z.string().min(3).max(15),
-    name: z.string().min(2).max(20),
-    email: z.string().email(),
-    password: z.string().min(8)
-})
+  username: z.string().min(3, "Username must be at least 3 characters long"),
+  name: z.string().min(2, "Name must be at least 2 characters long"),
+  email: z.string().email("Invalid email format"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
+});
 
 const signInValidation = z.object({
-  email: z.string().email(),
-  password: z.string().min(8)
-})
+  email: z.string().email("Invalid email format"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
+});
 
 module.exports = {
   signUpValidation,
-  signInValidation
-}
+  signInValidation,
+};
