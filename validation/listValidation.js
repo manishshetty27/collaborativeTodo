@@ -19,7 +19,7 @@ const deleteListValidation = z.object({
 // Validation schema for adding a collaborator to a list
 const addCollaboratorValidation = z.object({
   listId: z.string().min(1, { message: "List ID is required" }),
-  collaboratorId: z.string().min(1, { message: "Collaborator ID is required" }),
+  email: z.string().email({ message: "Email is required" }),
 });
 
 // Validation schema for removing a collaborator from a list

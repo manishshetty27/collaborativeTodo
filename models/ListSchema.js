@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const ListSchema = new mongoose.Schema(
   {
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    ownerId: { type: mongoose.Schema.Types.ObjectId, ref: "User"},
     title: { type: String, required: true, trim: true },
     tasks: [
       {

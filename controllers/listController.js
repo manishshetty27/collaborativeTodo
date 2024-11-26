@@ -21,10 +21,10 @@ const createList = async (req, res) => {
       });
     }
 
-    const { owner, title, collaborators } = parsedData.data;
-
+    const { title, collaborators } = parsedData.data;
+    const ownerId = req.userId; 
     const newList = new List({
-      owner,
+      ownerId,
       title,
       collaborators,
     });
